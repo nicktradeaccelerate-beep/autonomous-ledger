@@ -252,20 +252,48 @@
     display: flex; gap: 12px; align-items: center;
     margin-bottom: 20px;
   }
+  .search-wrap {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .search-icon {
+    position: absolute;
+    left: 14px;
+    color: var(--text-faint);
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+  }
   .search {
     flex: 1;
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid var(--border);
+    width: 100%;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: 8px;
     color: var(--text);
-    padding: 10px 0;
+    padding: 11px 14px 11px 40px;
     font-family: inherit;
     font-size: 14px;
     letter-spacing: -0.005em;
-    transition: border-color 150ms;
+    transition: border-color 150ms, box-shadow 150ms;
   }
-  .search:focus { outline: none; border-bottom-color: var(--accent); }
+  .search:focus { outline: none; border-color: var(--border-hover); box-shadow: 0 0 0 3px rgba(10,10,8,0.06); }
   .search::placeholder { color: var(--text-faint); }
+  .search-clear {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-faint);
+    font-size: 16px;
+    line-height: 1;
+    padding: 0;
+    display: none;
+  }
+  .search-clear:hover { color: var(--text); }
 
   .chip-row {
     display: flex; gap: 6px; flex-wrap: wrap;
@@ -1563,7 +1591,13 @@
 <div class="view active" id="view-projects">
   <div class="summary-strip" id="summary-strip"></div>
   <div class="controls">
-    <input type="text" class="search" id="search" placeholder="Scan projects, stack, people, documents…" />
+    <div class="search-wrap">
+      <span class="search-icon">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.5"/><line x1="10" y1="10" x2="13.5" y2="13.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </span>
+      <input type="text" class="search" id="search" placeholder="Search projects, stack, people, documents…" autocomplete="off" />
+      <button class="search-clear" id="search-clear" tabindex="-1">×</button>
+    </div>
   </div>
   <div class="chip-row" id="ecosystem-chips"></div>
   <div id="groups"></div>
@@ -2394,8 +2428,19 @@ document.getElementById("modal-overlay").addEventListener("click", (e) => {
   if (e.target.id === "modal-overlay") closeModal();
 });
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
-document.getElementById("search").addEventListener("input", (e) => {
-  state.search = e.target.value; renderGroups();
+const searchEl = document.getElementById("search");
+const searchClear = document.getElementById("search-clear");
+searchEl.addEventListener("input", (e) => {
+  state.search = e.target.value;
+  searchClear.style.display = e.target.value ? "block" : "none";
+  renderGroups();
+});
+searchClear.addEventListener("click", () => {
+  searchEl.value = "";
+  state.search = "";
+  searchClear.style.display = "none";
+  renderGroups();
+  searchEl.focus();
 });
 document.getElementById("add-partner-btn").addEventListener("click", openAddPartnerModal);
 document.getElementById("copy-masterprompt").addEventListener("click", async () => {
