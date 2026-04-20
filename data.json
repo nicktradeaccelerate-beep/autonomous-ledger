@@ -631,6 +631,34 @@
       "key_docs": [
         "Ten-clause amendment letter"
       ]
+    },
+    {
+      "id": "operating-ledger",
+      "name": "Operating Ledger",
+      "ecosystem": "Internal",
+      "status": "Live",
+      "progress": 90,
+      "one_liner": "Live project dashboard at operating-ledger.vercel.app — auto-syncs from Claude Code sessions via Stop hook.",
+      "tech_stack": [
+        "HTML",
+        "Vercel",
+        "GitHub Actions",
+        "Claude API (Haiku)",
+        "Node.js"
+      ],
+      "connections": [
+        "All projects (auto-sync)",
+        "Claude Code (Stop hook)"
+      ],
+      "revenue_model": "Internal tool",
+      "outstanding": [
+        "Add ledger.caldr.ai DNS A record (ledger → 76.76.21.21)",
+        "Connect Vercel to GitHub in dashboard settings"
+      ],
+      "key_docs": [
+        "operating-ledger.vercel.app",
+        "github.com/nicktradeaccelerate-beep/operating-ledger"
+      ]
     }
   ],
   "team_data": {
