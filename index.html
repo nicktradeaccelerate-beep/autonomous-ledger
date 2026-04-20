@@ -1994,7 +1994,10 @@ function renderTeam() {
             <div class="person-name">${m.name}</div>
             <div class="person-role">${m.role}</div>
           </div>
-          <div class="person-tier">${m.tier}</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <button class="edit-btn" onclick="openPersonEditModal('team','${m.id}')" title="Edit">✎</button>
+            <div class="person-tier">${m.tier}</div>
+          </div>
         </div>
         <div class="person-section">
           <div class="person-section-label">Responsibilities</div>
@@ -2090,7 +2093,10 @@ function renderPartners() {
             <div class="partner-name">${p.name}</div>
             <div class="partner-role">${p.role}</div>
           </div>
-          <div class="partner-status-badge" style="background: ${statusColor};">${p.status}</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-left:auto;">
+            <button class="edit-btn" onclick="openPersonEditModal('partner','${p.id}')" title="Edit">✎</button>
+            <div class="partner-status-badge" style="background: ${statusColor};">${p.status}</div>
+          </div>
         </div>
         <div class="partner-section">
           <div class="partner-section-label">Deal structure</div>
