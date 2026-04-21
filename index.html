@@ -2078,6 +2078,22 @@
 
   <!-- Log -->
   <div style="background:var(--bg-elev);border:1px solid var(--border);padding:0;">
+  <!-- Scheduler -->
+  <div style="background:var(--bg-elev);border:1px solid var(--border);padding:20px 24px;margin-bottom:24px;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+      <div style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-faint);">Auto Scheduler</div>
+      <div id="scheduler-badge" style="font-size:10px;font-family:'JetBrains Mono',monospace;padding:2px 8px;border-radius:3px;background:var(--bg-subtle);border:1px solid var(--border);color:var(--text-faint);">NOT INSTALLED</div>
+    </div>
+    <div style="font-size:13px;color:var(--text-dim);line-height:1.6;margin-bottom:14px;">
+      Runs automatically at <strong>login</strong> and <strong>8:30am daily</strong>. Picks the top 2 projects with outstanding tasks and starts the agent — no input needed.
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn signal" onclick="copySchedulerInstall()">⬇ Copy install command</button>
+      <button class="btn" onclick="copySchedulerUninstall()" style="color:var(--text-faint);">Remove scheduler</button>
+    </div>
+    <div id="scheduler-last" style="margin-top:10px;font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--text-faint);display:none;"></div>
+  </div>
+
     <div style="padding:16px 24px;border-bottom:1px solid var(--border);font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-faint);">Activity Log</div>
     <div id="agent-log" style="padding:16px 24px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.8;max-height:400px;overflow-y:auto;color:var(--text-dim);">
       <div style="color:var(--text-faint);">No activity yet. Launch an agent to begin.</div>
@@ -3660,6 +3676,7 @@ function copyAgentLaunch() {
 
 function renderAgentState(s) {
   if (!s) return;
+  updateSchedulerUI(s);
   const statusDot = document.getElementById('agent-status-dot');
   const statusLabel = document.getElementById('agent-status-label');
   const pendingWrap = document.getElementById('agent-pending-wrap');
@@ -3750,6 +3767,26 @@ function startAgentPoll() {
 
 function stopAgentPoll() {
   if (agentPollInterval) { clearInterval(agentPollInterval); agentPollInterval = null; }
+}
+
+function copySchedulerInstall() {
+  const cmd = `bash ~/autonomous-ledger/scripts/install-scheduler.sh`;
+  navigator.clipboard.writeText(cmd).then(() => showToast('Copied — paste in terminal to install'));
+}
+
+function copySchedulerUninstall() {
+  const cmd = `bash ~/autonomous-ledger/scripts/uninstall-scheduler.sh`;
+  navigator.clipboard.writeText(cmd).then(() => showToast('Copied — paste in terminal to remove'));
+}
+
+function updateSchedulerUI(agentState) {
+  const last = agentState?.scheduler_last_run;
+  const badge = document.getElementById('scheduler-badge');
+  const lastEl = document.getElementById('scheduler-last');
+  if (last) {
+    if (badge) { badge.textContent = 'INSTALLED'; badge.style.background = 'rgba(45,122,90,0.12)'; badge.style.color = 'var(--health-good)'; badge.style.borderColor = 'var(--health-good)'; }
+    if (lastEl) { lastEl.style.display = ''; lastEl.textContent = `Last run: ${new Date(last).toLocaleString('en-GB')} · Projects: ${(agentState.scheduler_projects||[]).join(', ')}`; }
+  }
 }
 
 // ============ GLOBAL CHAT ============
