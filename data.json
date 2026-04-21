@@ -30,7 +30,7 @@
         "CLAUDE.md (PTO production)",
         "UK tax strategy calculator v1.6.0"
       ],
-      "url": "http://localhost:3040",
+      "url": "http://localhost:3050",
       "local_path": "/Users/nicksinclair001/Downloads/pto-tax-intelligence"
     },
     {
@@ -39,7 +39,7 @@
       "ecosystem": "PTO",
       "status": "Live",
       "progress": 95,
-      "one_liner": "Quiz-based lead magnet at score.propertytaxoptimisers.co.uk. Landlord Portfolio Diagnostic variant also live.",
+      "one_liner": "CapEx eligibility quiz \u2014 scores commercial property owners for capital allowances opportunity. NOT the landlord readiness app.",
       "tech_stack": [
         "Next.js",
         "Supabase",
@@ -58,8 +58,8 @@
       "key_docs": [
         "Scorecard production config"
       ],
-      "url": "https://score.propertytaxoptimisers.co.uk",
-      "local_path": ""
+      "url": "http://localhost:3055/scorecard",
+      "local_path": "/Users/nicksinclair001/Downloads/pto-scorecard"
     },
     {
       "id": "pto-stan",
@@ -802,6 +802,40 @@
       "notes": "Live artifact at claude.ai \u2014 needs proper hosting",
       "url": "https://claude.ai/public/artifacts/250f897d-bda4-4530-bf5e-ae8eaf613748",
       "local_path": "/Users/nicksinclair001/Desktop/minnie-concierge",
+      "github": ""
+    },
+    {
+      "id": "caldr-os",
+      "name": "Caldr OS",
+      "ecosystem": "Caldr",
+      "status": "Build sprint",
+      "progress": 65,
+      "one_liner": "AI-powered work OS for remote VAs \u2014 VoIP calling, AI coaching, task management, boss reporting. Mobile-first PWA.",
+      "tech_stack": [
+        "Next.js",
+        "Supabase",
+        "Twilio",
+        "Claude API",
+        "Stripe",
+        "Resend"
+      ],
+      "connections": [
+        "Caldr.ai",
+        "BFB (CRM map)",
+        "os.caldr.ai"
+      ],
+      "revenue_model": "SaaS: Starter \u00a312 / Pro \u00a319 / Intelligence \u00a335 / OS \u00a329 per month",
+      "outstanding": [
+        "Twilio UK number approval (7-day process)",
+        "Supabase schema setup",
+        "Master library, access, training stubs to build out",
+        "Code editor module (/code route)"
+      ],
+      "key_docs": [
+        "CLAUDE.md \u2014 Caldr OS"
+      ],
+      "url": "http://localhost:3002",
+      "local_path": "/Users/nicksinclair001/caldr-os",
       "github": ""
     }
   ],

@@ -418,9 +418,16 @@ Start working through the outstanding tasks from the top. Use the tools availabl
     try {
       response = await callClaude(messages);
     } catch (e) {
-      log('error', `Claude API error: ${e.message}`);
-      writeState({ status: 'error' });
-      break;
+      if (e.message && e.message.includes('rate limit')) {
+        log('info', 'Rate limit hit — waiting 65s before retrying…');
+        await new Promise(r => setTimeout(r, 65000));
+        try { response = await callClaude(messages); }
+        catch (e2) { log('error', `Claude API error: ${e2.message}`); writeState({ status: 'error' }); break; }
+      } else {
+        log('error', `Claude API error: ${e.message}`);
+        writeState({ status: 'error' });
+        break;
+      }
     }
 
     messages.push({ role: 'assistant', content: response.content });
