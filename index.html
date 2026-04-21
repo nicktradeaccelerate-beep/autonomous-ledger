@@ -2018,10 +2018,10 @@
     </div>
   </div>
   <div class="chat-suggestions" id="chat-suggestions">
-    <div class="chat-chip" onclick="chatAsk(this.textContent)">Which project needs attention most?</div>
+    <div class="chat-chip" style="background:var(--accent-signal);color:var(--bg);border-color:var(--accent-signal);font-weight:600;font-size:12px;padding:7px 16px;" onclick="chatCarryOn()">▶ Carry on</div>
+    <div class="chat-chip" onclick="chatAsk(this.textContent)">What needs attention most?</div>
     <div class="chat-chip" onclick="chatAsk(this.textContent)">What's blocking Caldr OS?</div>
     <div class="chat-chip" onclick="chatAsk(this.textContent)">What should I build next?</div>
-    <div class="chat-chip" onclick="chatAsk(this.textContent)">Summarise all outstanding tasks</div>
   </div>
   <div class="chat-panel-input">
     <textarea class="chat-input" id="chat-input" rows="1" placeholder="Ask anything…"></textarea>
@@ -3793,6 +3793,11 @@ function buildLedgerContext() {
   const agentStatus = document.getElementById('agent-status-label')?.textContent;
   if (agentStatus && agentStatus !== 'IDLE') ctx += `\nAGENT: ${agentStatus}\n`;
   return ctx;
+}
+
+function chatCarryOn() {
+  document.getElementById('chat-suggestions').style.display = 'none';
+  sendChatMessage(`Look at all my projects and outstanding tasks. Tell me the top 3 things that need doing right now, then carry out whatever you can — launch the agent on anything with real code work, update any project data you can, and tell me what needs my input.`);
 }
 
 async function chatAsk(text) {
