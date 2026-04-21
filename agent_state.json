@@ -2,7 +2,7 @@
   "agent_state": {
     "status": "running",
     "project": "capexscan",
-    "current_task": "CLAUDE.md",
+    "current_task": "list_files",
     "log": [
       {
         "type": "info",
@@ -23,6 +23,11 @@
         "type": "info",
         "message": "Calling Claude (turn 2)…",
         "ts": "2026-04-21T08:29:50.656Z"
+      },
+      {
+        "type": "tool",
+        "message": "read_file: CLAUDE.md (6861 chars)",
+        "ts": "2026-04-21T08:29:53.483Z"
       }
     ],
     "pending": null
