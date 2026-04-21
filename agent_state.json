@@ -1,8 +1,8 @@
 {
   "agent_state": {
-    "status": "running",
+    "status": "idle",
     "project": "operating-ledger",
-    "current_task": "Connect Vercel to GitHub in dashboard settings",
+    "current_task": null,
     "log": [
       {
         "type": "info",
@@ -103,6 +103,26 @@
         "type": "info",
         "message": "Calling Claude (turn 8)…",
         "ts": "2026-04-21T07:35:00.837Z"
+      },
+      {
+        "type": "done",
+        "message": "Task done: Connect Vercel to GitHub in dashboard settings",
+        "ts": "2026-04-21T07:35:03.902Z"
+      },
+      {
+        "type": "info",
+        "message": "Calling Claude (turn 9)…",
+        "ts": "2026-04-21T07:35:03.903Z"
+      },
+      {
+        "type": "claude",
+        "message": "Both tasks marked done. ✅\n\n**Summary of what's now complete:**\n- `ledger.caldr.ai` DNS A record pointing to `76.76.21.21` — live\n- Vercel ↔ GitHub connection established for the operating-ledger proje",
+        "ts": "2026-04-21T07:35:07.337Z"
+      },
+      {
+        "type": "done",
+        "message": "Agent completed all tasks.",
+        "ts": "2026-04-21T07:35:07.337Z"
       }
     ],
     "pending": null
