@@ -1,6 +1,6 @@
 {
   "agent_state": {
-    "status": "idle",
+    "status": "error",
     "project": "operating-ledger",
     "current_task": null,
     "log": [
