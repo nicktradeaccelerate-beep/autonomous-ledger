@@ -1,6 +1,6 @@
 {
   "agent_state": {
-    "status": "running",
+    "status": "waiting",
     "project": "caldr-estate",
     "current_task": "cat /Users/nicksinclair001/Downloads/caldr/package.json | grep -E '\"name\"|\"description\"' && echo \"---\" && cat /Users/nicksinclair001/caldr-sme/frontend/package.json | grep -E '\"name\"|\"description\"'",
     "log": [
@@ -115,6 +115,11 @@
         "ts": "2026-04-21T08:09:46.159Z"
       }
     ],
-    "pending": null
+    "pending": {
+      "id": "1776758987037",
+      "type": "bash",
+      "description": "Run: cat /Users/nicksinclair001/Downloads/caldr/package.json | grep -E '\"name\"|\"description\"' && echo \"---\" && cat /Users/nicksinclair001/caldr-sme/frontend/package.json | grep -E '\"name\"|\"description\"'\nReason: Confirming which project is Caldr Estate vs caldr-sme",
+      "decision": null
+    }
   }
 }
