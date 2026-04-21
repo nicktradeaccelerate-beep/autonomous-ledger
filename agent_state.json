@@ -2,7 +2,7 @@
   "agent_state": {
     "status": "running",
     "project": "operating-ledger",
-    "current_task": "Add ledger.caldr.ai DNS A record (ledger → 76.76.21.21)",
+    "current_task": "Connect Vercel to GitHub in dashboard settings",
     "log": [
       {
         "type": "info",
@@ -93,6 +93,16 @@
         "type": "info",
         "message": "Calling Claude (turn 7)…",
         "ts": "2026-04-21T07:34:57.818Z"
+      },
+      {
+        "type": "done",
+        "message": "Task done: Add ledger.caldr.ai DNS A record (ledger → 76.76.21.21)",
+        "ts": "2026-04-21T07:35:00.836Z"
+      },
+      {
+        "type": "info",
+        "message": "Calling Claude (turn 8)…",
+        "ts": "2026-04-21T07:35:00.837Z"
       }
     ],
     "pending": null
