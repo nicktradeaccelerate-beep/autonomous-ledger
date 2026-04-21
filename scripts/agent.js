@@ -38,6 +38,32 @@ http.createServer((req, res) => {
     return;
   }
 
+  if (req.method === 'GET' && req.url === '/ping') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ ok: true }));
+    return;
+  }
+
+  if (req.method === 'POST' && req.url === '/instruct') {
+    let body = '';
+    req.on('data', d => body += d);
+    req.on('end', () => {
+      try {
+        const { message } = JSON.parse(body);
+        // Write instruction to state so agent picks it up
+        const s = readState();
+        s.agent_state.instruction = message;
+        fs.writeFileSync(STATE_PATH, JSON.stringify(s, null, 2));
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true }));
+        console.log(`\n📨 Instruction from chat: ${message}`);
+      } catch(e) {
+        res.writeHead(400); res.end(JSON.stringify({ error: e.message }));
+      }
+    });
+    return;
+  }
+
   if (req.method === 'POST' && req.url === '/approve') {
     let body = '';
     req.on('data', d => body += d);

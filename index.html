@@ -3836,12 +3836,111 @@ function setChatLoading(on) {
   } else if (!on && existing) existing.remove();
 }
 
+const CHAT_TOOLS = [
+  {
+    name: 'launch_agent',
+    description: 'Launch the autonomous agent on one or more projects. Copies the terminal command to clipboard.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        project_ids: { type: 'array', items: { type: 'string' }, description: 'Project IDs to run the agent on' },
+        reason: { type: 'string', description: 'Why you are launching the agent' }
+      },
+      required: ['project_ids']
+    }
+  },
+  {
+    name: 'instruct_agent',
+    description: 'Send an instruction or new task to the currently running agent.',
+    input_schema: {
+      type: 'object',
+      properties: { message: { type: 'string', description: 'The instruction to send' } },
+      required: ['message']
+    }
+  },
+  {
+    name: 'update_project',
+    description: 'Update a project field in the ledger: progress percentage, notes, or add/remove an outstanding task.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        project_id: { type: 'string' },
+        field: { type: 'string', enum: ['progress', 'notes', 'add_task', 'remove_task'] },
+        value: { type: 'string', description: 'New value or task text' }
+      },
+      required: ['project_id', 'field', 'value']
+    }
+  }
+];
+
+async function executeChatTool(name, input) {
+  if (name === 'launch_agent') {
+    const ids = input.project_ids.join(' ');
+    const cmd = `ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY node ~/autonomous-ledger/scripts/agent.js ${ids}`;
+    await navigator.clipboard.writeText(cmd);
+    return `✓ Launch command copied to clipboard for: ${input.project_ids.join(', ')}\nPaste it in any terminal to start.`;
+  }
+
+  if (name === 'instruct_agent') {
+    try {
+      const res = await fetch('http://localhost:4242/instruct', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: input.message }),
+        signal: AbortSignal.timeout(2000)
+      });
+      if (res.ok) return `✓ Instruction sent to agent: "${input.message}"`;
+      return '⚠ Agent responded with an error.';
+    } catch {
+      return '⚠ Agent is not running. Launch it first using launch_agent.';
+    }
+  }
+
+  if (name === 'update_project') {
+    const token = getGhToken();
+    if (!token) return '⚠ No GitHub token — cannot update project data.';
+    try {
+      const r = await fetch('https://api.github.com/repos/nicktradeaccelerate-beep/autonomous-ledger/contents/data.json', {
+        headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+      });
+      const meta = await r.json();
+      const data = JSON.parse(atob(meta.content.replace(/\n/g, '')));
+      const p = data.projects.find(x => x.id === input.project_id);
+      if (!p) return `⚠ Project "${input.project_id}" not found.`;
+      if (input.field === 'progress') p.progress = parseInt(input.value);
+      else if (input.field === 'notes') p.notes = input.value;
+      else if (input.field === 'add_task') p.outstanding.push(input.value);
+      else if (input.field === 'remove_task') p.outstanding = p.outstanding.filter(t => t !== input.value);
+      const updated = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+      await fetch('https://api.github.com/repos/nicktradeaccelerate-beep/autonomous-ledger/contents/data.json', {
+        method: 'PUT',
+        headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: `update ${input.project_id} ${input.field}`, content: updated, sha: meta.sha })
+      });
+      // Update local PROJECTS array
+      const lp = PROJECTS.find(x => x.id === input.project_id);
+      if (lp) {
+        if (input.field === 'progress') lp.progress = parseInt(input.value);
+        else if (input.field === 'notes') lp.notes = input.value;
+        else if (input.field === 'add_task') lp.outstanding.push(input.value);
+        else if (input.field === 'remove_task') lp.outstanding = lp.outstanding.filter(t => t !== input.value);
+        renderProjects();
+      }
+      return `✓ Updated ${input.project_id}: ${input.field} = "${input.value}"`;
+    } catch(e) {
+      return `⚠ Update failed: ${e.message}`;
+    }
+  }
+  return '⚠ Unknown tool';
+}
+
 async function sendChatMessage(text) {
-  const key = localStorage.getItem('pto_anthropic_key');
+  let key = localStorage.getItem('pto_anthropic_key');
   if (!key) {
     const entered = window.prompt('Paste your Anthropic API key (sk-ant-…):');
     if (!entered?.startsWith('sk-ant')) { showToast('Invalid key'); return; }
     localStorage.setItem('pto_anthropic_key', entered);
+    key = entered;
   }
   addChatMsg('user', text);
   if (chatState.messages.length === 0) {
@@ -3850,30 +3949,56 @@ async function sendChatMessage(text) {
   }
   chatState.messages.push({ role: 'user', content: text });
   setChatLoading(true);
+
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'x-api-key': localStorage.getItem('pto_anthropic_key'),
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true',
-        'content-type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 1024,
-        system: `You are Nick Sinclair's operating intelligence assistant. You have full context on all his projects, team, and business. Be direct, concise, and actionable. No filler. When suggesting agent actions, mention the project ID (e.g. "run the agent on caldr-os").`,
-        messages: chatState.messages
-      })
-    });
-    if (!res.ok) {
-      if (res.status === 401) { localStorage.removeItem('pto_anthropic_key'); throw new Error('Invalid API key'); }
-      throw new Error('API error ' + res.status);
+    let keepGoing = true;
+    while (keepGoing) {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'x-api-key': key,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true',
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 1024,
+          tools: CHAT_TOOLS,
+          system: `You are Nick Sinclair's operating intelligence assistant embedded in his project ledger. You have full context on all his projects. Be direct and concise.
+
+When the user asks you to DO something (run agent, update a project, send instruction), use the available tools to actually do it — don't just describe how.
+When suggesting to run the agent, use launch_agent immediately if the user confirms or implies they want to proceed.
+After using a tool, summarise what you did in one sentence.`,
+          messages: chatState.messages
+        })
+      });
+      if (!res.ok) {
+        if (res.status === 401) { localStorage.removeItem('pto_anthropic_key'); throw new Error('Invalid API key'); }
+        throw new Error('API error ' + res.status);
+      }
+      const data = await res.json();
+      chatState.messages.push({ role: 'assistant', content: data.content });
+
+      const toolUses = data.content.filter(b => b.type === 'tool_use');
+      const textBlocks = data.content.filter(b => b.type === 'text' && b.text.trim());
+
+      if (textBlocks.length) addChatMsg('assistant', textBlocks.map(b => b.text).join('\n'));
+
+      if (toolUses.length) {
+        const toolResults = [];
+        for (const tool of toolUses) {
+          setChatLoading(true);
+          const result = await executeChatTool(tool.name, tool.input);
+          toolResults.push({ type: 'tool_result', tool_use_id: tool.id, content: result });
+          addChatMsg('assistant', result);
+        }
+        chatState.messages.push({ role: 'user', content: toolResults });
+        keepGoing = data.stop_reason === 'tool_use';
+      } else {
+        keepGoing = false;
+      }
     }
-    const data = await res.json();
-    const reply = data.content[0].text;
-    addChatMsg('assistant', reply);
-    chatState.messages.push({ role: 'assistant', content: reply });
   } catch(e) {
     addChatMsg('assistant', '⚠ ' + e.message);
   }
