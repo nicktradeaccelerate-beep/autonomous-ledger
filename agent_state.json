@@ -2,7 +2,7 @@
   "agent_state": {
     "status": "running",
     "project": "capexscan",
-    "current_task": "list_files",
+    "current_task": "lib/capexscan/render-pdf.ts",
     "log": [
       {
         "type": "info",
@@ -238,6 +238,11 @@
         "type": "claude",
         "message": "Now I have a full picture. The **EPC Golden Thread module** needs to be built as a new expansion. Let me plan what this means for a UK capital allowances platform:\n\n- **EPC = Energy Performance Certif",
         "ts": "2026-04-21T08:33:03.940Z"
+      },
+      {
+        "type": "tool",
+        "message": "list_files: docs",
+        "ts": "2026-04-21T08:33:04.853Z"
       }
     ],
     "pending": null
