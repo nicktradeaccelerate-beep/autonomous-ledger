@@ -1,1 +1,9 @@
-{"agent_state":{"status":"idle","project":null,"current_task":null,"log":[],"pending":null}}
+{
+  "agent_state": {
+    "status": "running",
+    "project": "operating-ledger",
+    "current_task": null,
+    "log": [],
+    "pending": null
+  }
+}
