@@ -93,13 +93,13 @@
         "type": "info",
         "message": "Calling Claude (turn 9)…",
         "ts": "2026-04-21T08:09:27.566Z"
+      },
+      {
+        "type": "wait",
+        "message": "run_bash needs approval: ls /Users/nicksinclair001/caldr-sme && ls /Users/nicksinclair001/Downloads/caldr 2>/dev/null",
+        "ts": "2026-04-21T08:09:31.518Z"
       }
     ],
-    "pending": {
-      "id": "1776758970621",
-      "type": "bash",
-      "description": "Run: ls /Users/nicksinclair001/caldr-sme && ls /Users/nicksinclair001/Downloads/caldr 2>/dev/null\nReason: Checking contents of caldr-sme and caldr folders to find the Caldr Estate project",
-      "decision": null
-    }
+    "pending": null
   }
 }
