@@ -716,9 +716,9 @@
         "Add to agent scheduler"
       ],
       "key_docs": [],
-      "notes": "Running at http://localhost:3005 \u2014 local folder not yet located",
+      "notes": "Running at http://localhost:3005 \u2014 local folder: caldr-sme/frontend",
       "url": "http://localhost:3005",
-      "local_path": "",
+      "local_path": "/Users/nicksinclair001/caldr-sme/frontend",
       "github": ""
     },
     {
@@ -772,7 +772,7 @@
         "Wire frontend to backend"
       ],
       "key_docs": [],
-      "notes": "",
+      "notes": "Frontend runs on port 3005 (Caldr Estate UI). Full stack: frontend + backend.",
       "url": "",
       "local_path": "/Users/nicksinclair001/caldr-sme",
       "github": ""
