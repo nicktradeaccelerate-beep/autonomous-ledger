@@ -73,13 +73,13 @@
         "type": "info",
         "message": "Calling Claude (turn 7)…",
         "ts": "2026-04-21T08:09:06.748Z"
+      },
+      {
+        "type": "wait",
+        "message": "run_bash needs approval: find / -maxdepth 6 -type d -name \"caldr*\" 2>/dev/null | head -20",
+        "ts": "2026-04-21T08:09:11.345Z"
       }
     ],
-    "pending": {
-      "id": "1776758950422",
-      "type": "bash",
-      "description": "Run: find / -maxdepth 6 -type d -name \"caldr*\" 2>/dev/null | head -20\nReason: Searching for the caldr-sme/frontend folder mentioned in the project notes",
-      "decision": null
-    }
+    "pending": null
   }
 }
