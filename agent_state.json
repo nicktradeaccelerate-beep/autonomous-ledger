@@ -2,7 +2,7 @@
   "agent_state": {
     "status": "running",
     "project": "capexscan",
-    "current_task": "lib/capexscan/vision-types.ts",
+    "current_task": "lib/capexscan/asset-mapper.ts",
     "log": [
       {
         "type": "info",
@@ -173,6 +173,11 @@
         "type": "tool",
         "message": "read_file: lib/capexscan/vision-prompt.ts (784 chars)",
         "ts": "2026-04-21T08:18:42.818Z"
+      },
+      {
+        "type": "tool",
+        "message": "read_file: lib/capexscan/vision-types.ts (819 chars)",
+        "ts": "2026-04-21T08:18:44.814Z"
       }
     ],
     "pending": null
