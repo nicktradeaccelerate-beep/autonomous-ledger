@@ -11,7 +11,8 @@ const readline = require('readline');
 
 const http = require('http');
 
-const PROJECT_ID = process.argv[2];
+const PROJECT_IDS = process.argv.slice(2);
+const PROJECT_ID = PROJECT_IDS[0]; // current project being worked on
 const HOME = process.env.HOME;
 const LEDGER_DIR = path.join(HOME, 'autonomous-ledger');
 const DATA_PATH = path.join(LEDGER_DIR, 'data.json');
@@ -19,7 +20,7 @@ const STATE_PATH = path.join(LEDGER_DIR, 'agent_state.json');
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
 const LOCAL_PORT = 4242;
 
-if (!PROJECT_ID) { console.error('Usage: node agent.js <project-id>'); process.exit(1); }
+if (!PROJECT_IDS.length) { console.error('Usage: node agent.js <project-id> [project-id2] ...'); process.exit(1); }
 if (!ANTHROPIC_KEY) { console.error('Set ANTHROPIC_API_KEY env var'); process.exit(1); }
 
 // ── Local approval server ──────────────────────────────────────────────────
@@ -272,7 +273,7 @@ async function executeTool(name, input) {
 
   if (name === 'mark_task_done') {
     const d = JSON.parse(fs.readFileSync(DATA_PATH, 'utf8'));
-    const p = d.projects.find(x => x.id === PROJECT_ID);
+    const p = d.projects.find(x => x.id === (global._currentProjectId || PROJECT_ID));
     if (p) {
       p.outstanding = p.outstanding.filter(t => t !== input.task);
       fs.writeFileSync(DATA_PATH, JSON.stringify(d, null, 2));
@@ -344,23 +345,25 @@ Rules:
 
 // ── Main loop ──────────────────────────────────────────────────────────────
 
-async function run() {
-  console.log(`\n◆ Autonomous agent starting: ${project.name}`);
-  console.log(`  Directory : ${PROJECT_DIR}`);
-  console.log(`  Progress  : ${project.progress}%`);
-  console.log(`  Tasks     : ${project.outstanding.length} outstanding\n`);
+async function run(pid) {
+  const p = pid ? data.projects.find(x => x.id === pid) : project;
+  const dir = p.local_path;
+  console.log(`\n◆ Autonomous agent starting: ${p.name}`);
+  console.log(`  Directory : ${dir}`);
+  console.log(`  Progress  : ${p.progress}%`);
+  console.log(`  Tasks     : ${p.outstanding.length} outstanding\n`);
 
-  writeState({ status: 'running', project: PROJECT_ID, current_task: null, log: [], pending: null });
+  writeState({ status: 'running', project: pid || PROJECT_ID, current_task: null, log: [], pending: null });
 
-  const outstanding = project.outstanding.map((t, i) => `${i + 1}. ${t}`).join('\n');
+  const outstanding = p.outstanding.map((t, i) => `${i + 1}. ${t}`).join('\n');
   const messages = [
     {
       role: 'user',
-      content: `Project: ${project.name}
-Status: ${project.status} | Progress: ${project.progress}%
-Stack: ${project.tech_stack.join(', ')}
-${project.one_liner}
-${project.notes ? 'Notes: ' + project.notes : ''}
+      content: `Project: ${p.name}
+Status: ${p.status} | Progress: ${p.progress}%
+Stack: ${p.tech_stack.join(', ')}
+${p.one_liner}
+${p.notes ? 'Notes: ' + p.notes : ''}
 
 Outstanding tasks:
 ${outstanding || '(none — check if there is other work to do)'}
@@ -430,7 +433,27 @@ Start working through the outstanding tasks from the top. Use the tools availabl
   process.exit(0);
 }
 
-run().catch(e => {
+async function runAll() {
+  for (let i = 0; i < PROJECT_IDS.length; i++) {
+    const pid = PROJECT_IDS[i];
+    const p = data.projects.find(x => x.id === pid);
+    if (!p) { console.log(`⚠ Project "${pid}" not found — skipping`); continue; }
+    if (!p.local_path) { console.log(`⚠ No local path for "${pid}" — skipping`); continue; }
+    if (PROJECT_IDS.length > 1) {
+      console.log(`\n${'─'.repeat(50)}`);
+      console.log(`▶ Project ${i + 1} of ${PROJECT_IDS.length}: ${p.name}`);
+      console.log('─'.repeat(50));
+    }
+    // Reassign globals for current project
+    global._currentProjectId = pid;
+    await run(pid);
+  }
+  writeState({ status: 'idle', project: null, current_task: null });
+  console.log('\n✓ All projects complete.');
+  process.exit(0);
+}
+
+runAll().catch(e => {
   console.error('Fatal:', e.message);
   writeState({ status: 'error' });
   process.exit(1);

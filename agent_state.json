@@ -83,6 +83,11 @@
         "type": "claude",
         "message": "Now I have a full picture. Both outstanding tasks are **infrastructure/platform configuration** — they cannot be performed via code or CLI from within this repo. Here's the status:\n\n---\n\n### Task 1 — ",
         "ts": "2026-04-21T07:28:42.022Z"
+      },
+      {
+        "type": "wait",
+        "message": "Decision needed: Both outstanding tasks require manual action in external dashboards — they can't be completed via code or CLI. How do you want to proceed?\n\n**Task 1 — ledger.caldr.ai DNS A record (ledger → 76.76.21.21)**\n→ Needs to be done in your DNS provider (Cloudflare/Namecheap) for caldr.ai, then the domain added in Vercel → Settings → Domains.\n\n**Task 2 — Connect Vercel to GitHub**\n→ Needs to be done in Vercel Dashboard → operating-ledger project → Settings → Git.\n\nHave you already completed either of these, or do you need a step-by-step walkthrough for a specific one?",
+        "ts": "2026-04-21T07:28:43.824Z"
       }
     ],
     "pending": {

@@ -1935,10 +1935,12 @@
   <div style="background:var(--bg-elev);border:1px solid var(--border);padding:20px 24px;margin-bottom:24px;">
     <div style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-faint);margin-bottom:12px;">Launch Agent</div>
     <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-      <select id="agent-project-select" style="flex:1;min-width:200px;background:var(--bg-subtle);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:9px 12px;font-family:inherit;font-size:13px;">
-        <option value="">Select project…</option>
+      <select id="agent-project-select" multiple style="flex:1;min-width:200px;background:var(--bg-subtle);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:9px 12px;font-family:inherit;font-size:13px;height:120px;">
       </select>
-      <button class="btn signal" onclick="copyAgentLaunch()">▶ Copy launch command</button>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <button class="btn signal" onclick="copyAgentLaunch()">▶ Copy launch command</button>
+        <div style="font-size:11px;color:var(--text-faint);text-align:center;">Hold ⌘ to select multiple</div>
+      </div>
     </div>
     <div style="margin-top:12px;font-size:12px;color:var(--text-faint);line-height:1.6;">
       Paste the command in any terminal. Agent opens the project, briefs itself, and works through outstanding tasks.<br>
@@ -3538,10 +3540,10 @@ function populateAgentProjectSelect() {
 
 function copyAgentLaunch() {
   const sel = document.getElementById('agent-project-select');
-  const pid = sel?.value;
-  if (!pid) { showToast('Select a project first'); return; }
-  const cmd = `ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY node ~/autonomous-ledger/scripts/agent.js ${pid}`;
-  navigator.clipboard.writeText(cmd).then(() => showToast('Launch command copied — paste in terminal'));
+  const pids = Array.from(sel?.selectedOptions || []).map(o => o.value);
+  if (!pids.length) { showToast('Select at least one project'); return; }
+  const cmd = `ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY node ~/autonomous-ledger/scripts/agent.js ${pids.join(' ')}`;
+  navigator.clipboard.writeText(cmd).then(() => showToast(`Launch command copied for ${pids.length} project(s)`));
 }
 
 function renderAgentState(s) {
@@ -3612,45 +3614,20 @@ async function fetchAgentState() {
 
 async function submitApproval(approved) {
   if (!lastAgentPendingId) return;
-
-  // Local agent running — post directly, no token needed
-  if (agentIsLocal) {
-    try {
-      await fetch(AGENT_LOCAL + '/approve', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ decision: approved })
-      });
+  try {
+    const res = await fetch(AGENT_LOCAL + '/approve', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ decision: approved }),
+      signal: AbortSignal.timeout(2000)
+    });
+    if (res.ok) {
       showToast(approved ? 'Approved — agent continuing' : 'Rejected — agent will skip');
-      await fetchAgentState();
-      return;
-    } catch(e) {
-      showToast('Could not reach local agent: ' + e.message);
+      setTimeout(fetchAgentState, 500);
       return;
     }
-  }
-
-  // Remote fallback via GitHub API
-  const token = getGhToken();
-  if (!token) { showToast('Agent not running locally — no GitHub token set'); return; }
-  try {
-    const r = await fetch(`https://api.github.com/repos/nicktradeaccelerate-beep/autonomous-ledger/contents/agent_state.json`, {
-      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
-    });
-    const meta = await r.json();
-    const current = JSON.parse(atob(meta.content.replace(/\n/g, '')));
-    if (current.agent_state.pending) current.agent_state.pending.decision = approved;
-    const updated = btoa(unescape(encodeURIComponent(JSON.stringify(current, null, 2))));
-    await fetch(`https://api.github.com/repos/nicktradeaccelerate-beep/autonomous-ledger/contents/agent_state.json`, {
-      method: 'PUT',
-      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: approved ? 'approved' : 'rejected', content: updated, sha: meta.sha })
-    });
-    showToast(approved ? 'Approved' : 'Rejected');
-    await fetchAgentState();
-  } catch(e) {
-    showToast('Approval failed: ' + e.message);
-  }
+  } catch {}
+  showToast('Could not reach agent — is it still running?');
 }
 
 function startAgentPoll() {
