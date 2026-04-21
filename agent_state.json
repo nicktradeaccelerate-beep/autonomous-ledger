@@ -2,7 +2,7 @@
   "agent_state": {
     "status": "running",
     "project": "capexscan",
-    "current_task": "supabase/migrations/002_deal_opportunities.sql",
+    "current_task": "supabase/migrations/003_listing_sources.sql",
     "log": [
       {
         "type": "info",
@@ -123,6 +123,16 @@
         "type": "tool",
         "message": "read_file: supabase/migrations/001_initial_schema.sql (346 chars)",
         "ts": "2026-04-21T08:18:23.596Z"
+      },
+      {
+        "type": "tool",
+        "message": "read_file: supabase/migrations/002_deal_opportunities.sql (2210 chars)",
+        "ts": "2026-04-21T08:18:27.689Z"
+      },
+      {
+        "type": "info",
+        "message": "Calling Claude (turn 7)…",
+        "ts": "2026-04-21T08:18:27.690Z"
       }
     ],
     "pending": null
