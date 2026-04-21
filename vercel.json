@@ -2,6 +2,7 @@
   "version": 2,
   "routes": [
     { "src": "/data.json", "dest": "/data.json" },
+    { "src": "/agent_state.json", "dest": "/agent_state.json" },
     { "src": "/scripts/(.*)", "dest": "/scripts/$1" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]

@@ -1719,6 +1719,7 @@
   <button class="tab" data-view="sites"><span class="tab-num">05</span> Sites</button>
   <button class="tab" data-view="masterprompt"><span class="tab-num">06</span> Masterprompt</button>
   <button class="tab" data-view="voice"><span class="tab-num">07</span> Voice</button>
+  <button class="tab" data-view="agent"><span class="tab-num">08</span> Agent</button>
 </div>
 
 <!-- PROJECTS -->
@@ -1917,6 +1918,59 @@
   </svg>
 </button>
 
+<!-- AGENT VIEW -->
+<div class="view" id="view-agent">
+  <div class="section-mark" style="display:flex;align-items:center;gap:16px;margin-bottom:32px;">
+    <div>
+      <div style="font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-faint);margin-bottom:4px;">08 — Autonomous Agent</div>
+      <h2 style="font-size:28px;font-weight:600;letter-spacing:-0.025em;margin:0;">Agent Control</h2>
+    </div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:8px;">
+      <div id="agent-status-dot" style="width:8px;height:8px;border-radius:50%;background:var(--border);"></div>
+      <span id="agent-status-label" style="font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--text-faint);">IDLE</span>
+    </div>
+  </div>
+
+  <!-- Launch -->
+  <div style="background:var(--bg-elev);border:1px solid var(--border);padding:20px 24px;margin-bottom:24px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-faint);margin-bottom:12px;">Launch Agent</div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+      <select id="agent-project-select" style="flex:1;min-width:200px;background:var(--bg-subtle);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:9px 12px;font-family:inherit;font-size:13px;">
+        <option value="">Select project…</option>
+      </select>
+      <button class="btn signal" onclick="copyAgentLaunch()">▶ Copy launch command</button>
+    </div>
+    <div style="margin-top:12px;font-size:12px;color:var(--text-faint);line-height:1.6;">
+      Paste the command in any terminal. Agent opens the project, briefs itself, and works through outstanding tasks.<br>
+      File edits are auto-approved. Bash commands pause here for your sign-off.
+    </div>
+  </div>
+
+  <!-- Pending approval -->
+  <div id="agent-pending-wrap" style="display:none;background:var(--bg-elev);border:2px solid var(--accent-signal);padding:20px 24px;margin-bottom:24px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent-signal);margin-bottom:10px;">⏸ Waiting for approval</div>
+    <div id="agent-pending-desc" style="font-size:14px;line-height:1.6;margin-bottom:16px;white-space:pre-wrap;"></div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn signal" onclick="submitApproval(true)">✓ Approve</button>
+      <button class="btn" onclick="submitApproval(false)" style="border-color:var(--health-bad);color:var(--health-bad);">✗ Reject</button>
+    </div>
+  </div>
+
+  <!-- Current task -->
+  <div id="agent-task-wrap" style="display:none;background:var(--bg-elev);border:1px solid var(--border);padding:16px 24px;margin-bottom:24px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px;">Currently working on</div>
+    <div id="agent-current-task" style="font-size:14px;font-family:'JetBrains Mono',monospace;"></div>
+  </div>
+
+  <!-- Log -->
+  <div style="background:var(--bg-elev);border:1px solid var(--border);padding:0;">
+    <div style="padding:16px 24px;border-bottom:1px solid var(--border);font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-faint);">Activity Log</div>
+    <div id="agent-log" style="padding:16px 24px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.8;max-height:400px;overflow-y:auto;color:var(--text-dim);">
+      <div style="color:var(--text-faint);">No activity yet. Launch an agent to begin.</div>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL -->
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal" id="modal">
@@ -1994,6 +2048,7 @@ document.querySelectorAll('.tab').forEach(t => {
     document.getElementById('view-' + state.activeView).classList.add('active');
     if (state.activeView === 'masterprompt') generateMasterprompt();
     if (state.activeView === 'sites') renderSites();
+    if (state.activeView === 'agent') { populateAgentProjectSelect(); startAgentPoll(); } else { stopAgentPoll(); }
   });
 });
 
@@ -3457,6 +3512,133 @@ function setLoading(on) {
   } else if (!on && existing) {
     existing.remove();
   }
+}
+
+// ============ AGENT TAB ============
+let agentPollInterval = null;
+let lastAgentPendingId = null;
+let cachedGhToken = null;
+
+function getGhToken() {
+  if (!cachedGhToken) cachedGhToken = localStorage.getItem('gh_token');
+  return cachedGhToken;
+}
+
+function populateAgentProjectSelect() {
+  const sel = document.getElementById('agent-project-select');
+  if (!sel || !PROJECTS.length) return;
+  const withPath = PROJECTS.filter(p => p.local_path);
+  withPath.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p.id;
+    opt.textContent = p.name + ' · ' + p.progress + '%';
+    sel.appendChild(opt);
+  });
+}
+
+function copyAgentLaunch() {
+  const sel = document.getElementById('agent-project-select');
+  const pid = sel?.value;
+  if (!pid) { showToast('Select a project first'); return; }
+  const cmd = `ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY node ~/autonomous-ledger/scripts/agent.js ${pid}`;
+  navigator.clipboard.writeText(cmd).then(() => showToast('Launch command copied — paste in terminal'));
+}
+
+function renderAgentState(s) {
+  if (!s) return;
+  const statusDot = document.getElementById('agent-status-dot');
+  const statusLabel = document.getElementById('agent-status-label');
+  const pendingWrap = document.getElementById('agent-pending-wrap');
+  const taskWrap = document.getElementById('agent-task-wrap');
+  const logEl = document.getElementById('agent-log');
+
+  const colours = { running: 'var(--health-good)', waiting: 'var(--accent-signal)', error: 'var(--health-bad)', idle: 'var(--border)' };
+  if (statusDot) statusDot.style.background = colours[s.status] || 'var(--border)';
+  if (statusLabel) statusLabel.textContent = (s.status || 'idle').toUpperCase() + (s.project ? ' · ' + s.project : '');
+
+  // Pending approval
+  if (s.pending && s.pending.decision === null) {
+    if (pendingWrap) pendingWrap.style.display = '';
+    const desc = document.getElementById('agent-pending-desc');
+    if (desc) desc.textContent = s.pending.description;
+    lastAgentPendingId = s.pending.id;
+  } else {
+    if (pendingWrap) pendingWrap.style.display = 'none';
+    lastAgentPendingId = null;
+  }
+
+  // Current task
+  if (s.current_task && s.status === 'running') {
+    if (taskWrap) taskWrap.style.display = '';
+    const ct = document.getElementById('agent-current-task');
+    if (ct) ct.textContent = s.current_task;
+  } else {
+    if (taskWrap) taskWrap.style.display = 'none';
+  }
+
+  // Log
+  if (logEl && s.log && s.log.length) {
+    const icons = { info: '·', tool: '⚙', done: '✓', wait: '⏸', error: '✗', claude: '◆' };
+    const colours = { done: 'var(--health-good)', wait: 'var(--accent-signal)', error: 'var(--health-bad)', claude: 'var(--text)' };
+    logEl.innerHTML = [...s.log].reverse().map(e => {
+      const icon = icons[e.type] || '·';
+      const col = colours[e.type] || 'var(--text-dim)';
+      const time = new Date(e.ts).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      return `<div style="color:${col}">${time}  ${icon}  ${e.message}</div>`;
+    }).join('');
+  }
+}
+
+async function fetchAgentState() {
+  try {
+    const res = await fetch('./agent_state.json?t=' + Date.now());
+    if (!res.ok) return;
+    const data = await res.json();
+    renderAgentState(data.agent_state);
+  } catch {}
+}
+
+async function submitApproval(approved) {
+  if (!lastAgentPendingId) return;
+  const token = getGhToken();
+  if (!token) { showToast('Add GitHub token first (stored in localStorage as gh_token)'); return; }
+
+  const owner = 'nicktradeaccelerate-beep';
+  const repo = 'autonomous-ledger';
+
+  try {
+    // Read current file + sha
+    const r = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/agent_state.json`, {
+      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+    });
+    const meta = await r.json();
+    const current = JSON.parse(atob(meta.content.replace(/\n/g, '')));
+
+    if (current.agent_state.pending) {
+      current.agent_state.pending.decision = approved;
+    }
+
+    const updated = btoa(unescape(encodeURIComponent(JSON.stringify(current, null, 2))));
+    await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/agent_state.json`, {
+      method: 'PUT',
+      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: approved ? 'approved' : 'rejected', content: updated, sha: meta.sha })
+    });
+    showToast(approved ? 'Approved — agent continuing' : 'Rejected — agent will skip');
+    await fetchAgentState();
+  } catch(e) {
+    showToast('Could not write approval: ' + e.message);
+  }
+}
+
+function startAgentPoll() {
+  if (agentPollInterval) return;
+  agentPollInterval = setInterval(fetchAgentState, 4000);
+  fetchAgentState();
+}
+
+function stopAgentPoll() {
+  if (agentPollInterval) { clearInterval(agentPollInterval); agentPollInterval = null; }
 }
 </script>
 </div>
