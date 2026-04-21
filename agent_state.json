@@ -143,6 +143,11 @@
         "type": "info",
         "message": "Calling Claude (turn 12)…",
         "ts": "2026-04-21T08:10:51.873Z"
+      },
+      {
+        "type": "wait",
+        "message": "run_bash needs approval: ls /Users/nicksinclair001/Downloads/caldr/app/ && ls /Users/nicksinclair001/Downloads/caldr/app/ 2>/dev/null",
+        "ts": "2026-04-21T08:10:56.362Z"
       }
     ],
     "pending": {

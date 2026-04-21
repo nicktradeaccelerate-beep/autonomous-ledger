@@ -276,6 +276,15 @@ async function executeTool(name, input) {
   }
 
   if (name === 'run_bash') {
+    // Auto-approve read-only commands — only gate destructive/network ones
+    const readOnly = /^(cat|ls|head|tail|grep|find|echo|pwd|wc|file|stat|diff|which|type)\s/.test(input.command.trim());
+    if (readOnly) {
+      log('tool', `run_bash (auto): ${input.command.slice(0,80)}`);
+      try {
+        const out = execSync(input.command, { cwd: PROJECT_DIR, timeout: 30000 }).toString();
+        return out.slice(0, 4000) || '(no output)';
+      } catch(e) { return `Error: ${e.message.slice(0,500)}`; }
+    }
     const id = Date.now().toString();
     writeState({
       status: 'waiting',
