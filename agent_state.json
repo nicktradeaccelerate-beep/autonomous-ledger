@@ -1,6 +1,6 @@
 {
   "agent_state": {
-    "status": "waiting",
+    "status": "running",
     "project": "caldr-estate",
     "current_task": "ls /Users/nicksinclair001/caldr-sme && ls /Users/nicksinclair001/Downloads/caldr 2>/dev/null",
     "log": [
