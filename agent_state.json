@@ -2,7 +2,7 @@
   "agent_state": {
     "status": "running",
     "project": "capexscan",
-    "current_task": "CLAUDE.md",
+    "current_task": "supabase/migrations/001_initial_schema.sql",
     "log": [
       {
         "type": "info",
@@ -113,6 +113,11 @@
         "type": "info",
         "message": "Calling Claude (turn 6)…",
         "ts": "2026-04-21T08:18:18.792Z"
+      },
+      {
+        "type": "tool",
+        "message": "read_file: CLAUDE.md (6861 chars)",
+        "ts": "2026-04-21T08:18:22.491Z"
       }
     ],
     "pending": null
