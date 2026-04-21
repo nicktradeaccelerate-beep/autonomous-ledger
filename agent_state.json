@@ -2,7 +2,7 @@
   "agent_state": {
     "status": "running",
     "project": "capexscan",
-    "current_task": "lib/capexscan/asset-mapper.ts",
+    "current_task": "src/types/capexscan.ts",
     "log": [
       {
         "type": "info",
@@ -163,6 +163,11 @@
         "type": "info",
         "message": "Rate limit hit — waiting 65s before retrying…",
         "ts": "2026-04-21T08:30:28.480Z"
+      },
+      {
+        "type": "tool",
+        "message": "read_file: lib/capexscan/asset-mapper.ts (2736 chars)",
+        "ts": "2026-04-21T08:31:38.472Z"
       }
     ],
     "pending": null
