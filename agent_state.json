@@ -8,6 +8,16 @@
         "type": "info",
         "message": "Calling Claude (turn 1)…",
         "ts": "2026-04-21T08:08:49.332Z"
+      },
+      {
+        "type": "tool",
+        "message": "list_files: .",
+        "ts": "2026-04-21T08:08:51.707Z"
+      },
+      {
+        "type": "info",
+        "message": "Calling Claude (turn 2)…",
+        "ts": "2026-04-21T08:08:51.708Z"
       }
     ],
     "pending": null
