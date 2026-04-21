@@ -9,15 +9,56 @@ const path = require('path');
 const { execSync, exec } = require('child_process');
 const readline = require('readline');
 
+const http = require('http');
+
 const PROJECT_ID = process.argv[2];
 const HOME = process.env.HOME;
 const LEDGER_DIR = path.join(HOME, 'autonomous-ledger');
 const DATA_PATH = path.join(LEDGER_DIR, 'data.json');
 const STATE_PATH = path.join(LEDGER_DIR, 'agent_state.json');
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
+const LOCAL_PORT = 4242;
 
 if (!PROJECT_ID) { console.error('Usage: node agent.js <project-id>'); process.exit(1); }
 if (!ANTHROPIC_KEY) { console.error('Set ANTHROPIC_API_KEY env var'); process.exit(1); }
+
+// ── Local approval server ──────────────────────────────────────────────────
+// Dashboard connects to http://localhost:4242 — no GitHub token needed
+http.createServer((req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return; }
+
+  if (req.method === 'GET' && req.url === '/state') {
+    const state = fs.readFileSync(STATE_PATH, 'utf8');
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(state);
+    return;
+  }
+
+  if (req.method === 'POST' && req.url === '/approve') {
+    let body = '';
+    req.on('data', d => body += d);
+    req.on('end', () => {
+      try {
+        const { decision } = JSON.parse(body);
+        const s = readState();
+        if (s.agent_state.pending) s.agent_state.pending.decision = decision;
+        fs.writeFileSync(STATE_PATH, JSON.stringify(s, null, 2));
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true }));
+      } catch(e) {
+        res.writeHead(400); res.end(JSON.stringify({ error: e.message }));
+      }
+    });
+    return;
+  }
+
+  res.writeHead(404); res.end('not found');
+}).listen(LOCAL_PORT, () => {
+  console.log(`  Local server : http://localhost:${LOCAL_PORT}/state`);
+});
 
 // ── State ──────────────────────────────────────────────────────────────────
 

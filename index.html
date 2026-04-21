@@ -3515,13 +3515,13 @@ function setLoading(on) {
 }
 
 // ============ AGENT TAB ============
+const AGENT_LOCAL = 'http://localhost:4242';
 let agentPollInterval = null;
 let lastAgentPendingId = null;
-let cachedGhToken = null;
+let agentIsLocal = false;
 
 function getGhToken() {
-  if (!cachedGhToken) cachedGhToken = localStorage.getItem('gh_token');
-  return cachedGhToken;
+  return localStorage.getItem('gh_token') || localStorage.getItem('ol_gh_token') || '';
 }
 
 function populateAgentProjectSelect() {
@@ -3590,6 +3590,18 @@ function renderAgentState(s) {
 }
 
 async function fetchAgentState() {
+  // Try local agent server first (agent running on this machine)
+  try {
+    const res = await fetch(AGENT_LOCAL + '/state', { signal: AbortSignal.timeout(800) });
+    if (res.ok) {
+      agentIsLocal = true;
+      const data = await res.json();
+      renderAgentState(data.agent_state);
+      return;
+    }
+  } catch {}
+  // Fallback: GitHub
+  agentIsLocal = false;
   try {
     const res = await fetch('./agent_state.json?t=' + Date.now());
     if (!res.ok) return;
@@ -3600,34 +3612,44 @@ async function fetchAgentState() {
 
 async function submitApproval(approved) {
   if (!lastAgentPendingId) return;
+
+  // Local agent running — post directly, no token needed
+  if (agentIsLocal) {
+    try {
+      await fetch(AGENT_LOCAL + '/approve', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ decision: approved })
+      });
+      showToast(approved ? 'Approved — agent continuing' : 'Rejected — agent will skip');
+      await fetchAgentState();
+      return;
+    } catch(e) {
+      showToast('Could not reach local agent: ' + e.message);
+      return;
+    }
+  }
+
+  // Remote fallback via GitHub API
   const token = getGhToken();
-  if (!token) { showToast('Add GitHub token first (stored in localStorage as gh_token)'); return; }
-
-  const owner = 'nicktradeaccelerate-beep';
-  const repo = 'autonomous-ledger';
-
+  if (!token) { showToast('Agent not running locally — no GitHub token set'); return; }
   try {
-    // Read current file + sha
-    const r = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/agent_state.json`, {
+    const r = await fetch(`https://api.github.com/repos/nicktradeaccelerate-beep/autonomous-ledger/contents/agent_state.json`, {
       headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
     });
     const meta = await r.json();
     const current = JSON.parse(atob(meta.content.replace(/\n/g, '')));
-
-    if (current.agent_state.pending) {
-      current.agent_state.pending.decision = approved;
-    }
-
+    if (current.agent_state.pending) current.agent_state.pending.decision = approved;
     const updated = btoa(unescape(encodeURIComponent(JSON.stringify(current, null, 2))));
-    await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/agent_state.json`, {
+    await fetch(`https://api.github.com/repos/nicktradeaccelerate-beep/autonomous-ledger/contents/agent_state.json`, {
       method: 'PUT',
       headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: approved ? 'approved' : 'rejected', content: updated, sha: meta.sha })
     });
-    showToast(approved ? 'Approved — agent continuing' : 'Rejected — agent will skip');
+    showToast(approved ? 'Approved' : 'Rejected');
     await fetchAgentState();
   } catch(e) {
-    showToast('Could not write approval: ' + e.message);
+    showToast('Approval failed: ' + e.message);
   }
 }
 
