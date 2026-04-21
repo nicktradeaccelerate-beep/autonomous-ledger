@@ -1,6 +1,6 @@
 {
   "agent_state": {
-    "status": "waiting",
+    "status": "running",
     "project": "caldr-estate",
     "current_task": "find / -maxdepth 6 -type d -name \"caldr*\" 2>/dev/null | head -20",
     "log": [
