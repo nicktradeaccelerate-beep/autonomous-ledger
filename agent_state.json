@@ -2,8 +2,14 @@
   "agent_state": {
     "status": "running",
     "project": "operating-ledger",
-    "current_task": null,
-    "log": [],
+    "current_task": "list_files",
+    "log": [
+      {
+        "type": "info",
+        "message": "Calling Claude (turn 1)…",
+        "ts": "2026-04-21T07:16:51.151Z"
+      }
+    ],
     "pending": null
   }
 }
