@@ -1,6 +1,6 @@
 {
   "agent_state": {
-    "status": "running",
+    "status": "waiting",
     "project": "operating-ledger",
     "current_task": "which vercel && vercel --version 2>/dev/null; echo \"---\"; printenv | grep -i vercel | grep -v SECRET | grep -v TOKEN || echo \"No VERCEL env vars found\"; printenv | grep -i token | grep -iv secret | head -5 || echo \"none\"",
     "log": [
@@ -85,6 +85,11 @@
         "ts": "2026-04-21T07:17:21.967Z"
       }
     ],
-    "pending": null
+    "pending": {
+      "id": "1776755842893",
+      "type": "bash",
+      "description": "Run: which vercel && vercel --version 2>/dev/null; echo \"---\"; printenv | grep -i vercel | grep -v SECRET | grep -v TOKEN || echo \"No VERCEL env vars found\"; printenv | grep -i token | grep -iv secret | head -5 || echo \"none\"\nReason: Check if Vercel CLI is installed and if any Vercel/token env vars are available for API access",
+      "decision": null
+    }
   }
 }
