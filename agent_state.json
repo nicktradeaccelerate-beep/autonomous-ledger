@@ -2,7 +2,7 @@
   "agent_state": {
     "status": "running",
     "project": "capexscan",
-    "current_task": "lib/capexscan/vision-prompt.ts",
+    "current_task": "lib/capexscan/types.ts",
     "log": [
       {
         "type": "info",
@@ -133,6 +133,16 @@
         "type": "tool",
         "message": "read_file: supabase/migrations/003_listing_sources.sql (1495 chars)",
         "ts": "2026-04-21T08:30:22.442Z"
+      },
+      {
+        "type": "tool",
+        "message": "read_file: lib/capexscan/vision-prompt.ts (784 chars)",
+        "ts": "2026-04-21T08:30:23.315Z"
+      },
+      {
+        "type": "info",
+        "message": "Calling Claude (turn 9)…",
+        "ts": "2026-04-21T08:30:23.315Z"
       }
     ],
     "pending": null
