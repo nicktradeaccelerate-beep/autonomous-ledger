@@ -58,6 +58,11 @@
         "type": "info",
         "message": "Calling Claude (turn 4)…",
         "ts": "2026-04-21T08:29:59.598Z"
+      },
+      {
+        "type": "tool",
+        "message": "list_files: supabase/migrations",
+        "ts": "2026-04-21T08:30:03.188Z"
       }
     ],
     "pending": null
