@@ -1,6 +1,6 @@
 {
   "agent_state": {
-    "status": "running",
+    "status": "waiting",
     "project": "caldr-estate",
     "current_task": "ls /Users/nicksinclair001/caldr-sme && ls /Users/nicksinclair001/Downloads/caldr 2>/dev/null",
     "log": [
@@ -95,6 +95,11 @@
         "ts": "2026-04-21T08:09:27.566Z"
       }
     ],
-    "pending": null
+    "pending": {
+      "id": "1776758970621",
+      "type": "bash",
+      "description": "Run: ls /Users/nicksinclair001/caldr-sme && ls /Users/nicksinclair001/Downloads/caldr 2>/dev/null\nReason: Checking contents of caldr-sme and caldr folders to find the Caldr Estate project",
+      "decision": null
+    }
   }
 }
