@@ -2,7 +2,7 @@
   "agent_state": {
     "status": "running",
     "project": "operating-ledger",
-    "current_task": "request_decision",
+    "current_task": "Add ledger.caldr.ai DNS A record (ledger → 76.76.21.21)",
     "log": [
       {
         "type": "info",
@@ -88,6 +88,11 @@
         "type": "wait",
         "message": "Decision needed: Both outstanding tasks require manual action in external dashboards — they can't be completed via code or CLI. How do you want to proceed?\n\n**Task 1 — ledger.caldr.ai DNS A record (ledger → 76.76.21.21)**\n→ Needs to be done in your DNS provider (Cloudflare/Namecheap) for caldr.ai, then the domain added in Vercel → Settings → Domains.\n\n**Task 2 — Connect Vercel to GitHub**\n→ Needs to be done in Vercel Dashboard → operating-ledger project → Settings → Git.\n\nHave you already completed either of these, or do you need a step-by-step walkthrough for a specific one?",
         "ts": "2026-04-21T07:28:43.824Z"
+      },
+      {
+        "type": "info",
+        "message": "Calling Claude (turn 7)…",
+        "ts": "2026-04-21T07:34:57.818Z"
       }
     ],
     "pending": null
