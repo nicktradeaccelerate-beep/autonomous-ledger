@@ -2,7 +2,7 @@
   "agent_state": {
     "status": "running",
     "project": "capexscan",
-    "current_task": "app/api/projects/[projectId]/route.ts",
+    "current_task": "lib/capexscan/render-pdf.ts",
     "log": [
       {
         "type": "info",
@@ -218,6 +218,11 @@
         "type": "tool",
         "message": "read_file: app/api/projects/[projectId]/reports/route.ts (1260 chars)",
         "ts": "2026-04-21T08:18:56.565Z"
+      },
+      {
+        "type": "tool",
+        "message": "read_file: app/api/projects/[projectId]/route.ts (1069 chars)",
+        "ts": "2026-04-21T08:18:57.380Z"
       }
     ],
     "pending": null
