@@ -2,7 +2,7 @@
   "agent_state": {
     "status": "running",
     "project": "capexscan",
-    "current_task": "lib/capexscan/asset-mapper.ts",
+    "current_task": "lib/capexscan/report-builders.ts",
     "log": [
       {
         "type": "info",
@@ -178,6 +178,16 @@
         "type": "tool",
         "message": "read_file: lib/capexscan/vision-types.ts (819 chars)",
         "ts": "2026-04-21T08:18:44.814Z"
+      },
+      {
+        "type": "tool",
+        "message": "read_file: lib/capexscan/asset-mapper.ts (2736 chars)",
+        "ts": "2026-04-21T08:18:45.812Z"
+      },
+      {
+        "type": "info",
+        "message": "Calling Claude (turn 10)…",
+        "ts": "2026-04-21T08:18:45.813Z"
       }
     ],
     "pending": null
