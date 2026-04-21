@@ -1,6 +1,6 @@
 {
   "agent_state": {
-    "status": "running",
+    "status": "waiting",
     "project": "caldr-estate",
     "current_task": "ls /Users/nicksinclair001/Downloads/caldr/app/ && ls /Users/nicksinclair001/Downloads/caldr/app/ 2>/dev/null",
     "log": [
@@ -145,6 +145,11 @@
         "ts": "2026-04-21T08:10:51.873Z"
       }
     ],
-    "pending": null
+    "pending": {
+      "id": "1776759055552",
+      "type": "bash",
+      "description": "Run: ls /Users/nicksinclair001/Downloads/caldr/app/ && ls /Users/nicksinclair001/Downloads/caldr/app/ 2>/dev/null\nReason: Checking the app directory structure of the caldr project",
+      "decision": null
+    }
   }
 }
