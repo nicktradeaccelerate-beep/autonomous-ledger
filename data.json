@@ -30,8 +30,8 @@
         "CLAUDE.md (PTO production)",
         "UK tax strategy calculator v1.6.0"
       ],
-      "url": "https://propertytaxoptimisers.co.uk",
-      "local_path": ""
+      "url": "http://localhost:3040",
+      "local_path": "/Users/nicksinclair001/Downloads/pto-tax-intelligence"
     },
     {
       "id": "pto-scorecard",
@@ -142,7 +142,7 @@
       ],
       "url": "https://caldr-alpha.vercel.app",
       "github": "https://github.com/nicktradeaccelerate-beep/caldr-ai",
-      "local_path": ""
+      "local_path": "/Users/nicksinclair001/Downloads/caldr"
     },
     {
       "id": "caldr-property",
@@ -178,7 +178,7 @@
       "ecosystem": "Caldr",
       "status": "Designed",
       "progress": 30,
-      "one_liner": "M&A acquisition intelligence (£3,500/mo, acquire.caldr.ai). Bloomberg-style dark UI.",
+      "one_liner": "M&A acquisition intelligence (\u00a33,500/mo, acquire.caldr.ai). Bloomberg-style dark UI.",
       "tech_stack": [
         "Next.js",
         "Supabase (planned)",
@@ -188,7 +188,7 @@
         "Caldr ecosystem",
         "Thor (adjacent)"
       ],
-      "revenue_model": "£3,500/month subscription",
+      "revenue_model": "\u00a33,500/month subscription",
       "outstanding": [
         "Owner psychology profiling module",
         "Bolt-on value model build",
@@ -198,8 +198,8 @@
       "key_docs": [
         "Caldr Acquire platform spec"
       ],
-      "url": "https://acquire.caldr.ai",
-      "local_path": "/Users/nicksinclair001/caldr acquire"
+      "url": "http://localhost:3000",
+      "local_path": "/Users/nicksinclair001/Downloads/caldr-acquire"
     },
     {
       "id": "mirror",
@@ -243,7 +243,7 @@
         "backfromblack.co.uk landing",
         "Charlene (WhatsApp intake)"
       ],
-      "revenue_model": "Avg job value £500–£1,500. PO19 Chichester base.",
+      "revenue_model": "Avg job value \u00a3500\u2013\u00a31,500. PO19 Chichester base.",
       "outstanding": [
         "Production deployment (currently localhost)",
         "Property radar tuning",
@@ -262,7 +262,7 @@
       "ecosystem": "Thor",
       "status": "Designed",
       "progress": 40,
-      "one_liner": "Demo-ready HTML build using Meridian Fluid Systems (fictional £3.2m hydraulics case).",
+      "one_liner": "Demo-ready HTML build using Meridian Fluid Systems (fictional \u00a33.2m hydraulics case).",
       "tech_stack": [
         "HTML demo",
         "Next.js (planned)"
@@ -285,11 +285,11 @@
     },
     {
       "id": "comet-dno",
-      "name": "Comet Alliance DNO × EPC Tool",
+      "name": "Comet Alliance DNO \u00d7 EPC Tool",
       "ecosystem": "Comet",
       "status": "Live",
       "progress": 90,
-      "one_liner": "50,000 commercial properties, ~£125B estimated capital value. Streamlit on localhost:8501.",
+      "one_liner": "50,000 commercial properties, ~\u00a3125B estimated capital value. Streamlit on localhost:8501.",
       "tech_stack": [
         "Streamlit",
         "Python",
@@ -299,7 +299,7 @@
         "Thomas (field partner, site visits)",
         "Comet Alliance"
       ],
-      "revenue_model": "Internal deal origination → Comet Alliance deals",
+      "revenue_model": "Internal deal origination \u2192 Comet Alliance deals",
       "outstanding": [
         "Streamlit Community Cloud deployment",
         "Geographic radius filter v2 refinement"
@@ -365,7 +365,7 @@
       "ecosystem": "Standalone",
       "status": "Live",
       "progress": 85,
-      "one_liner": "Property image → capital allowances report. UK/US/AU jurisdictions. 138 files, 7 SQL migrations.",
+      "one_liner": "Property image \u2192 capital allowances report. UK/US/AU jurisdictions. 138 files, 7 SQL migrations.",
       "tech_stack": [
         "Next.js 15",
         "Supabase",
@@ -386,9 +386,9 @@
       "key_docs": [
         "CapexScan production repo"
       ],
-      "url": "https://capexscan.vercel.app",
+      "url": "http://localhost:3001",
       "github": "https://github.com/nicktradeaccelerate-beep/capexscan",
-      "local_path": "/Users/nicksinclair001/capexscan"
+      "local_path": "/Users/nicksinclair001/capexscan/capex-full"
     },
     {
       "id": "eva",
@@ -514,7 +514,8 @@
       "key_docs": [
         "Procurai Scout CLAUDE.md"
       ],
-      "local_path": "/Users/nicksinclair001/scout"
+      "local_path": "/Users/nicksinclair001/scout",
+      "url": "http://localhost:3005"
     },
     {
       "id": "procurai-grants",
@@ -672,7 +673,7 @@
       "ecosystem": "Internal",
       "status": "Live",
       "progress": 90,
-      "one_liner": "Live project dashboard at operating-ledger.vercel.app — auto-syncs from Claude Code sessions via Stop hook.",
+      "one_liner": "Live project dashboard at operating-ledger.vercel.app \u2014 auto-syncs from Claude Code sessions via Stop hook.",
       "tech_stack": [
         "HTML",
         "Vercel",
@@ -693,6 +694,115 @@
       "url": "https://operating-ledger.vercel.app",
       "github": "https://github.com/nicktradeaccelerate-beep/operating-ledger",
       "local_path": "/Users/nicksinclair001/operating-ledger"
+    },
+    {
+      "id": "caldr-estate",
+      "name": "Caldr Estate",
+      "ecosystem": "Caldr",
+      "status": "Build",
+      "progress": 40,
+      "one_liner": "Estate agent intelligence platform \u2014 property market signals, lead scoring, outreach automation.",
+      "tech_stack": [
+        "Next.js",
+        "Supabase",
+        "Claude API"
+      ],
+      "connections": [
+        "Nick Sinclair"
+      ],
+      "revenue_model": "SaaS subscription",
+      "outstanding": [
+        "Confirm local folder location",
+        "Add to agent scheduler"
+      ],
+      "key_docs": [],
+      "notes": "Running at http://localhost:3005 \u2014 local folder not yet located",
+      "url": "http://localhost:3005",
+      "local_path": "",
+      "github": ""
+    },
+    {
+      "id": "caldr-solopreneur",
+      "name": "Caldr Solopreneur",
+      "ecosystem": "Caldr",
+      "status": "Build",
+      "progress": 35,
+      "one_liner": "Caldr adapted for solopreneurs \u2014 trimmed solo-adaptation branch.",
+      "tech_stack": [
+        "Next.js",
+        "Supabase",
+        "Claude API",
+        "Twilio"
+      ],
+      "connections": [
+        "Nick Sinclair"
+      ],
+      "revenue_model": "SaaS subscription",
+      "outstanding": [
+        "Complete trim audit",
+        "Deploy to Vercel"
+      ],
+      "key_docs": [
+        "TRIM_AUDIT.md",
+        "TRIM_COMPLETE.md"
+      ],
+      "notes": "",
+      "url": "",
+      "local_path": "/Users/nicksinclair001/caldr-solopreneur",
+      "github": ""
+    },
+    {
+      "id": "caldr-sme",
+      "name": "Caldr SME",
+      "ecosystem": "Caldr",
+      "status": "Build",
+      "progress": 30,
+      "one_liner": "Caldr for SME businesses \u2014 frontend + backend architecture.",
+      "tech_stack": [
+        "Next.js",
+        "Python",
+        "Supabase"
+      ],
+      "connections": [
+        "Nick Sinclair"
+      ],
+      "revenue_model": "SaaS subscription",
+      "outstanding": [
+        "Define MVP scope",
+        "Wire frontend to backend"
+      ],
+      "key_docs": [],
+      "notes": "",
+      "url": "",
+      "local_path": "/Users/nicksinclair001/caldr-sme",
+      "github": ""
+    },
+    {
+      "id": "minnie-concierge",
+      "name": "Minnie Concierge",
+      "ecosystem": "Retail / Hospitality",
+      "status": "Build",
+      "progress": 50,
+      "one_liner": "AI concierge assistant for retail and hospitality \u2014 brand-aware customer engagement.",
+      "tech_stack": [
+        "HTML",
+        "Claude API"
+      ],
+      "connections": [
+        "Nick Sinclair"
+      ],
+      "revenue_model": "White-label SaaS",
+      "outstanding": [
+        "Deploy to hosting",
+        "Wire live API key"
+      ],
+      "key_docs": [
+        "Minnie_Concierge_Retail_Pitch.pdf"
+      ],
+      "notes": "Live artifact at claude.ai \u2014 needs proper hosting",
+      "url": "https://claude.ai/public/artifacts/250f897d-bda4-4530-bf5e-ae8eaf613748",
+      "local_path": "/Users/nicksinclair001/Desktop/minnie-concierge",
+      "github": ""
     }
   ],
   "team_data": {
@@ -904,7 +1014,7 @@
         "id": "dan",
         "name": "Dan",
         "role": "Personal tax partner",
-        "deal": "TBC — needs formalised split",
+        "deal": "TBC \u2014 needs formalised split",
         "access_input": "Personal tax advisory, individual client work adjacent to PTO commercial tax",
         "projects": [
           "pto-core"
@@ -923,8 +1033,8 @@
         "id": "thomas",
         "name": "Thomas",
         "role": "Comet field partner",
-        "deal": "Comet Alliance partner — field execution on EPC/DNO site visits",
-        "access_input": "On-the-ground site visits for Comet DNO × EPC opportunities, grid connection verification",
+        "deal": "Comet Alliance partner \u2014 field execution on EPC/DNO site visits",
+        "access_input": "On-the-ground site visits for Comet DNO \u00d7 EPC opportunities, grid connection verification",
         "projects": [
           "comet-dno",
           "comet-deal-flow"
@@ -943,7 +1053,7 @@
         "id": "elise",
         "name": "Elise",
         "role": "Comet partner",
-        "deal": "Comet Alliance partner — TBC exact capacity",
+        "deal": "Comet Alliance partner \u2014 TBC exact capacity",
         "access_input": "Comet ecosystem support (scope to be defined)",
         "projects": [
           "comet-dno",
