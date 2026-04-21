@@ -125,36 +125,50 @@ const TOOLS = [
 
 // ── Tool execution ─────────────────────────────────────────────────────────
 
-const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+const isTTY = process.stdin.isTTY;
+let rl = null;
+if (isTTY) {
+  rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+}
+
 function askTerminal(q) {
+  if (!rl) return new Promise(() => {}); // never resolves — dashboard only
   return new Promise(resolve => rl.question(q, resolve));
 }
 
 async function waitForApproval(id, description) {
-  // Poll state file for dashboard approval (every 3s), or accept terminal input
   console.log('\n⏸  APPROVAL NEEDED:');
   console.log(`   ${description}`);
-  console.log('   Type y/n here, or approve/reject in the dashboard.\n');
+  if (isTTY) {
+    console.log('   Type y/n here, or approve/reject in the dashboard.\n');
+  } else {
+    console.log('   Approve or reject in the dashboard at autonomous-ledger.vercel.app\n');
+  }
 
   return new Promise((resolve) => {
-    // Terminal listener
-    const terminalCheck = askTerminal('   → y/n: ').then(ans => {
+    let resolved = false;
+    const done = (val) => {
+      if (resolved) return;
+      resolved = true;
       clearInterval(pollInterval);
       writeState({ pending: null });
-      resolve(ans.trim().toLowerCase() === 'y');
-    });
+      resolve(val);
+    };
 
-    // Dashboard poll
+    // Terminal input (only if TTY)
+    if (isTTY) {
+      askTerminal('   → y/n: ').then(ans => done(ans.trim().toLowerCase() === 'y'));
+    }
+
+    // Dashboard poll (always)
     const pollInterval = setInterval(() => {
       try {
         const s = readState();
         const p = s.agent_state.pending;
         if (p && p.id === id && p.decision !== null && p.decision !== undefined) {
-          clearInterval(pollInterval);
-          rl.close();
-          writeState({ pending: null });
           console.log(`   Dashboard: ${p.decision ? 'approved' : 'rejected'}`);
-          resolve(p.decision);
+          if (rl) rl.close();
+          done(p.decision);
         }
       } catch {}
     }, 3000);
@@ -237,8 +251,15 @@ async function executeTool(name, input) {
     console.log('\n⏸  DECISION NEEDED:');
     console.log(`   ${input.question}`);
     input.options.forEach((o, i) => console.log(`   ${i + 1}. ${o}`));
-    const ans = await askTerminal('   → Enter number or type answer: ');
-    const choice = parseInt(ans) ? input.options[parseInt(ans) - 1] || ans : ans;
+    let choice = input.options[0]; // default to first option
+    if (isTTY) {
+      const ans = await askTerminal('   → Enter number or type answer: ');
+      choice = parseInt(ans) ? input.options[parseInt(ans) - 1] || ans : ans;
+    } else {
+      // Wait for dashboard decision same as bash approval
+      const decided = await waitForApproval(id, desc);
+      choice = decided ? input.options[0] : input.options[1] || input.options[0];
+    }
     writeState({ status: 'running', pending: null });
     return `User chose: ${choice}`;
   }
