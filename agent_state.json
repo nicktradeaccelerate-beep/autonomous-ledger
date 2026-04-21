@@ -1,6 +1,6 @@
 {
   "agent_state": {
-    "status": "waiting",
+    "status": "running",
     "project": "caldr-estate",
     "current_task": "cat /Users/nicksinclair001/Downloads/caldr/package.json | grep -E '\"name\"|\"description\"' && echo \"---\" && cat /Users/nicksinclair001/caldr-sme/frontend/package.json | grep -E '\"name\"|\"description\"'",
     "log": [
