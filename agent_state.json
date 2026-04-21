@@ -90,19 +90,6 @@
         "ts": "2026-04-21T07:28:43.824Z"
       }
     ],
-    "pending": {
-      "id": "1776756522935",
-      "type": "decision",
-      "description": "Both outstanding tasks require manual action in external dashboards — they can't be completed via code or CLI. How do you want to proceed?\n\n**Task 1 — ledger.caldr.ai DNS A record (ledger → 76.76.21.21)**\n→ Needs to be done in your DNS provider (Cloudflare/Namecheap) for caldr.ai, then the domain added in Vercel → Settings → Domains.\n\n**Task 2 — Connect Vercel to GitHub**\n→ Needs to be done in Vercel Dashboard → operating-ledger project → Settings → Git.\n\nHave you already completed either of these, or do you need a step-by-step walkthrough for a specific one?\nOptions: I've completed both — mark them done / I've completed Task 1 only — mark it done / I've completed Task 2 only — mark it done / Give me a detailed walkthrough for Task 1 (DNS) / Give me a detailed walkthrough for Task 2 (Vercel GitHub) / Leave both open for now",
-      "options": [
-        "I've completed both — mark them done",
-        "I've completed Task 1 only — mark it done",
-        "I've completed Task 2 only — mark it done",
-        "Give me a detailed walkthrough for Task 1 (DNS)",
-        "Give me a detailed walkthrough for Task 2 (Vercel GitHub)",
-        "Leave both open for now"
-      ],
-      "decision": null
-    }
+    "pending": null
   }
 }
