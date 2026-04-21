@@ -128,13 +128,13 @@
         "type": "info",
         "message": "Calling Claude (turn 11)…",
         "ts": "2026-04-21T08:10:08.097Z"
+      },
+      {
+        "type": "wait",
+        "message": "run_bash needs approval: cat /Users/nicksinclair001/Downloads/caldr/README.md 2>/dev/null | head -30 && echo \"---STATUS---\" && cat /Users/nicksinclair001/Downloads/caldr/STATUS.md 2>/dev/null | head -30",
+        "ts": "2026-04-21T08:10:19.847Z"
       }
     ],
-    "pending": {
-      "id": "1776759011775",
-      "type": "bash",
-      "description": "Run: cat /Users/nicksinclair001/Downloads/caldr/README.md 2>/dev/null | head -30 && echo \"---STATUS---\" && cat /Users/nicksinclair001/Downloads/caldr/STATUS.md 2>/dev/null | head -30\nReason: Reading README and STATUS to confirm this is the Caldr Estate project",
-      "decision": null
-    }
+    "pending": null
   }
 }
