@@ -1,6 +1,6 @@
 {
   "agent_state": {
-    "status": "waiting",
+    "status": "running",
     "project": "operating-ledger",
     "current_task": "request_decision",
     "log": [
