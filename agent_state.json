@@ -1,6 +1,6 @@
 {
   "agent_state": {
-    "status": "running",
+    "status": "error",
     "project": "capexscan",
     "current_task": "supabase/migrations/005_us_au_asset_library.sql",
     "log": [
