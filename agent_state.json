@@ -2,7 +2,7 @@
   "agent_state": {
     "status": "running",
     "project": "caldr-estate",
-    "current_task": "find / -maxdepth 6 -type d -name \"caldr*\" 2>/dev/null | head -20",
+    "current_task": "list_files",
     "log": [
       {
         "type": "info",
@@ -78,6 +78,16 @@
         "type": "wait",
         "message": "run_bash needs approval: find / -maxdepth 6 -type d -name \"caldr*\" 2>/dev/null | head -20",
         "ts": "2026-04-21T08:09:11.345Z"
+      },
+      {
+        "type": "tool",
+        "message": "run_bash done: find / -maxdepth 6 -type d -name \"caldr*\" 2>/dev/null | head -20",
+        "ts": "2026-04-21T08:09:24.835Z"
+      },
+      {
+        "type": "info",
+        "message": "Calling Claude (turn 8)…",
+        "ts": "2026-04-21T08:09:24.835Z"
       }
     ],
     "pending": null
