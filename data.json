@@ -837,6 +837,46 @@
       "url": "http://localhost:3002",
       "local_path": "/Users/nicksinclair001/caldr-os",
       "github": ""
+    },
+    {
+      "id": "careos",
+      "name": "CareOS",
+      "ecosystem": "Standalone",
+      "status": "Spec",
+      "progress": 5,
+      "one_liner": "Locked Android device + platform for domiciliary care staff \u2014 visit checklists, voice note transcription, GPS tracking, family messaging. CQC compliant.",
+      "tech_stack": [
+        "Next.js",
+        "Supabase",
+        "Claude API (Whisper transcription)",
+        "PWA (offline-first)",
+        "Android kiosk mode",
+        "Data SIM"
+      ],
+      "connections": [
+        "Caldr OS (shared stack)",
+        "CQC compliance framework"
+      ],
+      "revenue_model": "Per-device or per-carer SaaS licence to care company owners. Hardware (locked Android + SIM) bundled or BYOD.",
+      "outstanding": [
+        "Write full CLAUDE.md spec",
+        "Design visit workflow and checklist schema",
+        "Build offline-first PWA core",
+        "GPS arrival/departure tracking",
+        "Voice note + Claude transcription flow",
+        "Photo capture + evidence storage",
+        "Family messaging portal",
+        "Manager live map + alerts dashboard",
+        "CQC-compliant care note format and export",
+        "Android kiosk mode lockdown"
+      ],
+      "key_docs": [
+        "CareOS spec (to be written)"
+      ],
+      "url": "",
+      "local_path": "",
+      "github": "",
+      "notes": "Offline-first mandatory (poor signal in care homes). CQC compliance required to sell to registered UK care providers. Locked Android device with data SIM \u2014 staff cannot use phone for anything else. Family portal: relatives send messages/photos shown to client on visit. GPS tracks arrival, time on site, departure."
     }
   ],
   "team_data": {
