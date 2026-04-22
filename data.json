@@ -842,8 +842,8 @@
       "id": "careos",
       "name": "CareOS",
       "ecosystem": "Standalone",
-      "status": "Spec",
-      "progress": 5,
+      "status": "Spec complete",
+      "progress": 10,
       "one_liner": "Locked Android device + platform for domiciliary care staff \u2014 visit checklists, voice note transcription, GPS tracking, family messaging. CQC compliant.",
       "tech_stack": [
         "Next.js",
@@ -859,19 +859,22 @@
       ],
       "revenue_model": "Per-device or per-carer SaaS licence to care company owners. Hardware (locked Android + SIM) bundled or BYOD.",
       "outstanding": [
-        "Write full CLAUDE.md spec",
-        "Design visit workflow and checklist schema",
-        "Build offline-first PWA core",
-        "GPS arrival/departure tracking",
-        "Voice note + Claude transcription flow",
-        "Photo capture + evidence storage",
-        "Family messaging portal",
-        "Manager live map + alerts dashboard",
-        "CQC-compliant care note format and export",
-        "Android kiosk mode lockdown"
+        "Scaffold Next.js 15 PWA",
+        "Supabase schema \u2014 all tables",
+        "Auth \u2014 Email OTP",
+        "Carer today view \u2014 rota list",
+        "Visit flow \u2014 checklist, GPS arrival, timer",
+        "Voice note \u2192 Whisper \u2192 Claude care note",
+        "Offline sync \u2014 idb-keyval + service worker",
+        "Photo capture \u2192 Supabase Storage",
+        "Family portal \u2014 token link, messaging",
+        "Manager dashboard \u2014 live map, alerts",
+        "CQC exports \u2014 PDF per client",
+        "Android kiosk + MDM setup",
+        "Billing \u2014 Stripe per-carer"
       ],
       "key_docs": [
-        "CareOS spec (to be written)"
+        "CAREOS-CLAUDE.md \u2014 /Users/nicksinclair001/Downloads/CAREOS-CLAUDE.md"
       ],
       "url": "",
       "local_path": "",
