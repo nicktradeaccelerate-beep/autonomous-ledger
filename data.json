@@ -881,6 +881,45 @@
       "local_path": "/Users/nicksinclair001/caldr-care-app",
       "github": "",
       "notes": "Two surfaces: /caldr-care = provider console (Next.js), /caldr-care-app = carer app (React Native/Expo). Supabase MUST be London eu-west-2. Device: Samsung Galaxy A16 4G at \u00a3100. Spec: CLAUDE_CALDERCARE_MASTER_V1.2.md"
+    },
+    {
+      "id": "caldr-care-family",
+      "name": "CalderCare Family",
+      "ecosystem": "Standalone",
+      "status": "Build sprint",
+      "progress": 15,
+      "one_liner": "Companion app for families of domiciliary care clients \u2014 weekly AI updates, carer messaging, photo sharing, wellness trends. B2C SaaS at \u00a37.99\u2013\u00a319.99/month.",
+      "tech_stack": [
+        "React Native",
+        "Expo",
+        "Supabase (London \u2014 shared with CalderCare)",
+        "Claude API",
+        "Twilio",
+        "Stripe"
+      ],
+      "connections": [
+        "CalderCare (parent product \u2014 shared Supabase schema)",
+        "Provider referral 20% commission model"
+      ],
+      "revenue_model": "Family pays direct: Free (email only) / Essential \u00a37.99 / Plus \u00a312.99 / Dual-parent \u00a319.99 / Concierge +\u00a329. 20% referral cut to referring care provider. ~80% gross margin.",
+      "outstanding": [
+        "Run family_schema.sql in Supabase to create tables",
+        "Sprint 0: web onboarding + Stripe billing + consent capture",
+        "Sprint 1: weekly update generation (Claude) + Resend email delivery",
+        "Sprint 2: family mobile app screens (scaffold done)",
+        "Sprint 3: Twilio masked messaging",
+        "Sprint 4: voice messages + photo moderation",
+        "Sprint 5: family group invites + referral commission",
+        "Sprint 6: launch + concierge tier"
+      ],
+      "key_docs": [
+        "CLAUDE_CALDERCARE_FAMILY_V1.md \u2014 ~/Downloads/",
+        "family_schema.sql \u2014 /caldr-care/supabase/family_schema.sql"
+      ],
+      "url": "",
+      "local_path": "/Users/nicksinclair001/caldr-care-family",
+      "github": "",
+      "notes": "Q3 2026 roadmap item. Schema forward-compatible hooks wired into CalderCare V1.2. Family NEVER sees care notes, MAR, vitals, safeguarding \u2014 hard deny at RLS level."
     }
   ],
   "team_data": {
