@@ -1806,6 +1806,7 @@
   <button class="tab" data-view="masterprompt"><span class="tab-num">06</span> Masterprompt</button>
   <button class="tab" data-view="voice"><span class="tab-num">07</span> Voice</button>
   <button class="tab" data-view="agent"><span class="tab-num">08</span> Agent</button>
+  <button class="tab" data-view="platform"><span class="tab-num">09</span> Platform</button>
 </div>
 
 <!-- PROJECTS -->
@@ -2097,6 +2098,66 @@
     <div style="padding:16px 24px;border-bottom:1px solid var(--border);font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-faint);">Activity Log</div>
     <div id="agent-log" style="padding:16px 24px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.8;max-height:400px;overflow-y:auto;color:var(--text-dim);">
       <div style="color:var(--text-faint);">No activity yet. Launch an agent to begin.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PLATFORM VIEW -->
+<div class="view" id="view-platform">
+  <div style="display:flex;align-items:center;gap:16px;margin-bottom:32px;">
+    <div>
+      <div style="font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-faint);margin-bottom:4px;">09 — Apprentice Platform</div>
+      <h2 style="font-size:28px;font-weight:600;letter-spacing:-0.025em;margin:0;">Platform</h2>
+    </div>
+    <a href="https://caldros.vercel.app" target="_blank" style="margin-left:auto;display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;padding:10px 18px;font-size:13px;font-weight:600;text-decoration:none;letter-spacing:-0.01em;">
+      Open Platform ↗
+    </a>
+  </div>
+
+  <!-- Quick links -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:32px;">
+    <a href="https://caldros.vercel.app/platform" target="_blank" style="display:block;background:var(--bg-elev);border:1px solid var(--border);padding:20px;text-decoration:none;transition:border-color 150ms;" onmouseover="this.style.borderColor='var(--border-strong)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;">Overview</div>
+      <div style="font-size:15px;font-weight:600;color:var(--text);letter-spacing:-0.01em;">Platform Home</div>
+      <div style="font-size:12px;color:var(--text-faint);margin-top:4px;line-height:1.5;">Escalations, review queue, daily narrative</div>
+    </a>
+    <a href="https://caldros.vercel.app/platform/apprentices" target="_blank" style="display:block;background:var(--bg-elev);border:1px solid var(--border);padding:20px;text-decoration:none;transition:border-color 150ms;" onmouseover="this.style.borderColor='var(--border-strong)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;">People</div>
+      <div style="font-size:15px;font-weight:600;color:var(--text);letter-spacing:-0.01em;">Apprentices</div>
+      <div style="font-size:12px;color:var(--text-faint);margin-top:4px;line-height:1.5;">Manage access, budgets, action ledger</div>
+    </a>
+    <a href="https://caldros.vercel.app/platform/review" target="_blank" style="display:block;background:var(--bg-elev);border:1px solid var(--border);padding:20px;text-decoration:none;transition:border-color 150ms;" onmouseover="this.style.borderColor='var(--border-strong)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;">Quality</div>
+      <div style="font-size:15px;font-weight:600;color:var(--text);letter-spacing:-0.01em;">Review Queue</div>
+      <div style="font-size:12px;color:var(--text-faint);margin-top:4px;line-height:1.5;">Approve, reject, or archive submissions</div>
+    </a>
+    <a href="https://caldros.vercel.app/platform/costs" target="_blank" style="display:block;background:var(--bg-elev);border:1px solid var(--border);padding:20px;text-decoration:none;transition:border-color 150ms;" onmouseover="this.style.borderColor='var(--border-strong)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;">Finance</div>
+      <div style="font-size:15px;font-weight:600;color:var(--text);letter-spacing:-0.01em;">AI Costs</div>
+      <div style="font-size:12px;color:var(--text-faint);margin-top:4px;line-height:1.5;">Monthly spend by user, feature, model</div>
+    </a>
+    <a href="https://caldros.vercel.app/bfb/templates" target="_blank" style="display:block;background:var(--bg-elev);border:1px solid var(--border);padding:20px;text-decoration:none;transition:border-color 150ms;" onmouseover="this.style.borderColor='var(--border-strong)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;">BFB</div>
+      <div style="font-size:15px;font-weight:600;color:var(--text);letter-spacing:-0.01em;">Email Templates</div>
+      <div style="font-size:12px;color:var(--text-faint);margin-top:4px;line-height:1.5;">Create, edit, and send BFB client emails</div>
+    </a>
+    <a href="https://caldros.vercel.app/platform/products" target="_blank" style="display:block;background:var(--bg-elev);border:1px solid var(--border);padding:20px;text-decoration:none;transition:border-color 150ms;" onmouseover="this.style.borderColor='var(--border-strong)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;">Teaching</div>
+      <div style="font-size:15px;font-weight:600;color:var(--text);letter-spacing:-0.01em;">Products</div>
+      <div style="font-size:12px;color:var(--text-faint);margin-top:4px;line-height:1.5;">BFB teaching variant, voice profile, AI Guide</div>
+    </a>
+  </div>
+
+  <!-- Charlene status -->
+  <div style="background:var(--bg-elev);border:1px solid var(--border);padding:20px 24px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-faint);margin-bottom:16px;">Active Apprentices</div>
+    <div style="display:flex;align-items:center;gap:16px;padding:12px 0;border-bottom:1px solid var(--border);">
+      <div style="width:36px;height:36px;border-radius:50%;background:var(--bg-subtle);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--text);flex-shrink:0;">C</div>
+      <div style="flex:1;">
+        <div style="font-size:14px;font-weight:600;color:var(--text);letter-spacing:-0.01em;">Charlene van der Westhuizen</div>
+        <div style="font-size:12px;color:var(--text-faint);margin-top:2px;">charlene@devcor.co.za — BFB project — £50/mo budget</div>
+      </div>
+      <a href="https://caldros.vercel.app/platform/apprentices" target="_blank" style="font-size:12px;color:var(--text-faint);text-decoration:none;font-family:'JetBrains Mono',monospace;letter-spacing:0.05em;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-faint)'">View →</a>
     </div>
   </div>
 </div>
